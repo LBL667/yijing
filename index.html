@@ -7,15 +7,15 @@
   <meta name="format-detection" content="telephone=no,email=no,address=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="asset-version" content="2136">
+  <meta name="asset-version" content="2210">
   <title>衣境 · 智能穿搭</title>
-  <link rel="stylesheet" href="css/style.css?v=2136">
-  <link rel="stylesheet" href="css/force-graph.css?v=2136">
-  <link rel="stylesheet" href="css/sheet.css?v=2136">
-  <link rel="stylesheet" href="css/ai.css?v=2136">
-  <link rel="stylesheet" href="css/wardrobe.css?v=2136">
-  <link rel="stylesheet" href="css/profile.css?v=2136">
-  <link rel="stylesheet" href="css/settings.css?v=2136">
+  <link rel="stylesheet" href="css/style.css?v=2210">
+  <link rel="stylesheet" href="css/force-graph.css?v=2210">
+  <link rel="stylesheet" href="css/sheet.css?v=2210">
+  <link rel="stylesheet" href="css/ai.css?v=2210">
+  <link rel="stylesheet" href="css/wardrobe.css?v=2210">
+  <link rel="stylesheet" href="css/profile.css?v=2210">
+  <link rel="stylesheet" href="css/settings.css?v=2210">
   <style>
     /* ---------- SPA 框架层 ---------- */
     .page { display: none; }
@@ -24,9 +24,11 @@
     /* 切换过渡：浏览器支持 View Transitions 时由 API 接管，否则用 CSS 降级 */
     @media (prefers-reduced-motion: no-preference) {
       .page.is-entering { animation: pageIn 0.2s ease; }
+      /* 只用透明度过渡：transform 会让页面内的 fixed 元素（如 AI 输入栏）
+         在动画期间相对页面定位，造成跳动 */
       @keyframes pageIn {
-        from { opacity: 0; transform: translateY(5px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; }
+        to   { opacity: 1; }
       }
       /* 跨页交叉淡入的时长与曲线（View Transitions） */
       ::view-transition-old(root),
@@ -85,10 +87,10 @@
     <div class="page-boot-dot"></div>
   </div>
 
-  <script src="js/common.js?v=2136"></script>
-  <script src="js/api/client.js?v=2136"></script>
-  <script src="js/ui-sheet.js?v=2136"></script>
-  <script src="js/force-graph.js?v=2136"></script>
-  <script src="js/router.js?v=2136"></script>
+  <script src="js/common.js?v=2210"></script>
+  <script src="js/api/client.js?v=2210"></script>
+  <script src="js/ui-sheet.js?v=2210"></script>
+  <script src="js/force-graph.js?v=2210"></script>
+  <script src="js/router.js?v=2210"></script>
 </body>
 </html>
