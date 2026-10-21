@@ -77,27 +77,10 @@ function renderProfileCenter(data) {
     });
   });
 
-  /* 资产管理 */
-  const m = data.manage;
-  document.getElementById('pcManage').innerHTML = `
-    <div class="pc-ms">
-      <span class="pc-ms-ic">${icon('coin', 15)}</span>
-      <b class="is-money">${m.total}</b>
-      <span class="pc-ms-label">总价值</span>
-      <span class="pc-ms-up">↑ ${m.totalUp}</span>
-    </div>
-    <div class="pc-ms">
-      <span class="pc-ms-ic">${icon('bag', 15)}</span>
-      <b>${m.count}</b>
-      <span class="pc-ms-label">单品数量</span>
-      <span class="pc-ms-up">↑ ${m.countUp}</span>
-    </div>
-    <div class="pc-ms">
-      <span class="pc-ms-ic">${icon('plusCircle', 15)}</span>
-      <b>${m.newCount}</b>
-      <span class="pc-ms-label">本月新增</span>
-      <span class="pc-ms-up">↑ ${m.newUp}</span>
-    </div>`;
+  /* 穿搭关键词 */
+  document.getElementById('pcKeywords').innerHTML = (data.keywords || [])
+    .map((k, i) => `<span class="pc-kw${i === 0 ? ' is-main' : ''}">${k.name}<i>${k.pct}%</i></span>`)
+    .join('');
 
   /* 订单 */
   document.getElementById('pcOrders').innerHTML = data.orders.map((o) => `

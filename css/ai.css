@@ -73,7 +73,6 @@
   from { transform: translateY(8px); }
   to   { transform: translateY(0); }
 }
-}
 
 /* ---------- 我的身材数据 ---------- */
 .body-card {

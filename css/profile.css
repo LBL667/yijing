@@ -395,5 +395,36 @@
   white-space: nowrap;
 }
 
+/* ---------- 穿搭关键词 ---------- */
+.pc-keywords {
+  margin-top: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pc-kw {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 15px;
+  background: #FBF1F2;
+  color: var(--brand);
+  font-size: 12px;
+  line-height: 1;
+}
+.pc-kw.is-main {
+  background: var(--brand);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+.pc-kw i {
+  font-style: normal;
+  font-size: 10px;
+  opacity: 0.72;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- 底部留白 ---------- */
 .pc-bottom-space { height: 14px; }

@@ -266,11 +266,14 @@ window.API = (() => {
         { icon: 'closet',  name: '胶囊衣柜', desc: '高效搭配 · 精简衣橱', route: 'wardrobe.html?view=capsule' },
         { icon: 'diamond', name: '穿搭资产', desc: '我的数字藏品',        route: 'wardrobe.html?view=dash' },
       ],
-      manage: {
-        total: '¥28,560', totalUp: '12.5%',
-        count: 86, countUp: '8.7%',
-        newCount: 12, newUp: '20.0%',
-      },
+      /* 穿搭关键词（AI 归纳，带权重） */
+      keywords: [
+        { name: '清新', pct: 85 },
+        { name: '简约', pct: 72 },
+        { name: '甜美', pct: 64 },
+        { name: '学院', pct: 51 },
+        { name: '复古', pct: 38 },
+      ],
       orders: [
         { icon: 'wallet', label: '待付款', badge: 2 },
         { icon: 'box',    label: '待发货', badge: 1 },

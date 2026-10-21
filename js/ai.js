@@ -288,32 +288,45 @@ const ChatFlow = (() => {
     const data = await API.getAssistantHome();
     aiState.data = data;
 
-    BodyPanel.render(data.body);
-    BodyPanel.init();
+    /* 各区块独立容错：某一块失败不影响其它部分渲染 */
+    const step = (name, fn) => {
+      try {
+        fn();
+      } catch (err) {
+        console.warn('[ai] ' + name + ' 失败', err);
+      }
+    };
 
-    const userBubble = document.querySelector('.bubble-user2');
-    if (userBubble) userBubble.textContent = data.userMessage;
-    const replyText = document.querySelector('.reply-text');
-    if (replyText) replyText.textContent = data.replyText;
+    step('身材卡', () => { BodyPanel.render(data.body); BodyPanel.init(); });
 
-    const strip = data.sizeStrip;
-    const ssValues = document.querySelectorAll('.ss-value');
-    if (ssValues[0]) ssValues[0].innerHTML = `<b>${strip.size}</b> 码`;
-    const ssSub = document.querySelector('.ss-sub');
-    if (ssSub) ssSub.textContent = strip.sizeNote;
-    if (ssValues[1]) ssValues[1].innerHTML = `<b>${strip.fit}</b>`;
-    const ssBadge = document.querySelector('.ss-badge');
-    if (ssBadge) ssBadge.textContent = strip.fitTag;
-    const reasonsEl = document.querySelector('.ss-reasons');
-    if (reasonsEl) reasonsEl.innerHTML = strip.reasons.map((r) => `<li>${r}</li>`).join('');
+    step('对话文案', () => {
+      const userBubble = document.querySelector('.bubble-user2');
+      if (userBubble) userBubble.textContent = data.userMessage;
+      const replyText = document.querySelector('.reply-text');
+      if (replyText) replyText.textContent = data.replyText;
+    });
 
-    ProductCarousel.init();
-    ProductCarousel.render(0, false);
-    AddCloset.init();
-    ChatFlow.init();
+    step('尺码条', () => {
+      const strip = data.sizeStrip;
+      const ssValues = document.querySelectorAll('.ss-value');
+      if (ssValues[0]) ssValues[0].innerHTML = `<b>${strip.size}</b> 码`;
+      const ssSub = document.querySelector('.ss-sub');
+      if (ssSub) ssSub.textContent = strip.sizeNote;
+      if (ssValues[1]) ssValues[1].innerHTML = `<b>${strip.fit}</b>`;
+      const ssBadge = document.querySelector('.ss-badge');
+      if (ssBadge) ssBadge.textContent = strip.fitTag;
+      const reasonsEl = document.querySelector('.ss-reasons');
+      if (reasonsEl) reasonsEl.innerHTML = strip.reasons.map((r) => `<li>${r}</li>`).join('');
+    });
 
-    document.querySelectorAll('[data-toast]').forEach((el) => {
-      el.addEventListener('click', () => showToast(el.dataset.toast));
+    step('商品轮播', () => { ProductCarousel.init(); ProductCarousel.render(0, false); });
+    step('加入衣柜', () => AddCloset.init());
+    step('对话输入', () => ChatFlow.init());
+
+    step('通用提示', () => {
+      document.querySelectorAll('[data-toast]').forEach((el) => {
+        el.addEventListener('click', () => showToast(el.dataset.toast));
+      });
     });
   } catch (err) {
     console.error(err);
