@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#F5F6F8">
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>衣境 · 智能穿搭</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/force-graph.css">
+  <link rel="stylesheet" href="css/sheet.css">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/wardrobe.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <style>
+    /* ---------- SPA 框架层 ---------- */
+    .page { display: none; }
+    .page.is-active { display: block; }
+
+    /* 切换过渡：浏览器支持 View Transitions 时由 API 接管，否则用 CSS 降级 */
+    @media (prefers-reduced-motion: no-preference) {
+      .page.is-entering { animation: pageIn 0.2s ease; }
+      @keyframes pageIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      /* 跨页交叉淡入的时长与曲线（View Transitions） */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.22s;
+        animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面容器：各页面由路由按需注入 -->
+  <div id="pageHost"></div>
+
+  <!-- 底部导航（全站唯一实例） -->
+  <nav class="tab-bar" id="tabBar" aria-label="底部导航">
+    <button class="tab" data-route="community" aria-label="社区">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      </svg>
+      <span>社区</span>
+    </button>
+    <button class="tab" data-route="assistant" aria-label="AI助手">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M12 4.4c-4.6 0-8 3-8 6.9 0 2.2 1.1 4.1 2.9 5.4l-.5 3.6 3.8-2c.6.1 1.2.2 1.8.2 4.6 0 8-3 8-6.9s-3.4-7.2-8-7.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <circle cx="8.6" cy="11.4" r="1" fill="currentColor"/>
+        <circle cx="12" cy="11.4" r="1" fill="currentColor"/>
+        <circle cx="15.4" cy="11.4" r="1" fill="currentColor"/>
+      </svg>
+      <span>AI助手</span>
+    </button>
+    <button class="tab" data-route="wardrobe" aria-label="衣柜">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M14.5 7a2.5 2.5 0 1 0-5 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M12 7 3.9 12.8c-.9.7-.4 2.1.7 2.1h14.8c1.1 0 1.6-1.4.7-2.1z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/>
+      </svg>
+      <span>衣柜</span>
+    </button>
+    <button class="tab" data-route="profile" aria-label="我的">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <circle cx="12" cy="8.2" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M5 20c0-3.8 3.1-6.3 7-6.3s7 2.5 7 6.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <span>我的</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 启动骨架 -->
+  <div class="page-boot" id="pageBoot" aria-hidden="true">
+    <div class="page-boot-dot"></div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/api/client.js"></script>
+  <script src="js/ui-sheet.js"></script>
+  <script src="js/force-graph.js"></script>
+  <script src="js/router.js"></script>
+</body>
+</html>

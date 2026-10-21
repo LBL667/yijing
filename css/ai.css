@@ -1,0 +1,544 @@
+/* ============================================================
+   AI 助手 · 宽松夹克推荐版（依赖 style.css 公共组件）
+   ============================================================ */
+
+/* ---------- 本页扩展 Token ---------- */
+.ai2-app {
+  --brand: #EB1424;            /* 本页主红 */
+  --pink-icon: #E05585;        /* 星星 / 店铺图标玫粉 */
+  --bubble-user2: #FDE2E5;     /* 用户气泡粉 */
+  --strip-bg: #FBF4F7;         /* 尺码三列卡底 */
+  --match-bg: #FBE9EC;         /* 匹配度卡底 */
+  background: #F5F6F8;
+}
+
+/* ---------- 页头 ---------- */
+.ai2-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px var(--page-pad) 0;
+}
+.ai2-titles h1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #232327;
+  letter-spacing: 0.5px;
+}
+.ai2-titles p {
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--text-3);
+}
+.record-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 11px;
+  margin-top: 2px;
+  background: #FFFFFF;
+  border: 1px solid #E9EBEF;
+  border-radius: 14px;
+  font-size: 10.5px;
+  color: var(--text-2);
+  transition: transform 0.12s ease;
+}
+.record-btn:active { transform: scale(0.95); }
+
+/* ---------- 对话区公共 ---------- */
+.ai2-main {
+  padding: 12px var(--page-pad) 0;
+  display: flex;
+  flex-direction: column;
+}
+.msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.msg-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--bubble-user2);
+}
+.msg-anim { animation: ai2In 0.3s ease; }
+@keyframes ai2In {
+  from { transform: translateY(8px); }
+  to   { transform: translateY(0); }
+}
+}
+
+/* ---------- 我的身材数据 ---------- */
+.body-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 11px;
+  display: flex;
+  gap: 10px;
+}
+.body-img {
+  width: 44px;
+  height: 71px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #FDF0F2;
+  flex-shrink: 0;
+}
+.body-right { flex: 1; min-width: 0; }
+.body-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.body-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #232327;
+}
+.edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  color: var(--pink-icon);
+  padding: 3px 0 3px 8px;
+}
+.body-metrics {
+  margin-top: 10px;
+  display: flex;
+}
+.metric {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+.metric + .metric { border-left: 1px solid #F1F2F4; }
+.m-label {
+  display: block;
+  font-size: 9.5px;
+  color: var(--text-3);
+}
+.metric p {
+  margin-top: 4px;
+  white-space: nowrap;
+}
+.metric b {
+  font-size: 14px;
+  font-weight: 700;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+}
+.metric i {
+  font-style: normal;
+  font-size: 8.5px;
+  color: var(--text-4);
+  margin-left: 1px;
+}
+
+/* ---------- 用户气泡 ---------- */
+.row-user {
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+.bubble-user2 {
+  max-width: 72%;
+  background: var(--bubble-user2);
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #3A2A2E;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- AI 回复 ---------- */
+.row-ai { margin-top: 16px; }
+.ai-reply {
+  flex: 1;
+  min-width: 0;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 12px;
+}
+.reply-text {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+/* 尺码三列卡 */
+.size-strip {
+  margin-top: 10px;
+  background: var(--strip-bg);
+  border-radius: 10px;
+  padding: 11px 10px;
+  display: flex;
+  align-items: stretch;
+}
+.ss-col {
+  flex: 1;
+  min-width: 0;
+  padding: 0 8px;
+}
+.ss-col:first-child { padding-left: 2px; }
+.ss-col + .ss-col { border-left: 1px solid #F3DDE2; }
+.ss-col-reasons { flex: 1.5; }
+.ss-label {
+  display: block;
+  font-size: 9.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.ss-value {
+  margin-top: 7px;
+  color: #232327;
+  white-space: nowrap;
+  font-size: 11px;
+}
+.ss-value b {
+  font-size: 17px;
+  font-weight: 700;
+}
+.ss-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 9.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.ss-badge {
+  display: inline-block;
+  margin-top: 6px;
+  background: #FFFFFF;
+  color: var(--brand);
+  border: 1px solid #F6C9CF;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  border-radius: 9px;
+}
+.ss-reasons {
+  list-style: none;
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ss-reasons li {
+  position: relative;
+  padding-left: 13px;
+  font-size: 9.5px;
+  line-height: 1.45;
+  color: #4A4A4E;
+}
+.ss-reasons li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 8px;
+  height: 4.5px;
+  border-left: 1.6px solid var(--brand);
+  border-bottom: 1.6px solid var(--brand);
+  transform: rotate(-45deg);
+}
+
+/* ---------- 推荐商品卡 ---------- */
+.product-card {
+  margin-top: 16px;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 9px;
+  display: flex;
+  gap: 11px;
+}
+.p-gallery {
+  position: relative;
+  flex: 0 0 38%;
+  min-width: 0;
+}
+.p-gallery img {
+  width: 100%;
+  aspect-ratio: 307 / 450;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #E8E8EA;
+}
+.p-flag {
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--brand);
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(235, 20, 36, 0.35);
+}
+.p-count {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  z-index: 2;
+  background: rgba(20, 20, 24, 0.45);
+  color: #FFFFFF;
+  font-size: 9px;
+  padding: 2.5px 7px;
+  border-radius: 9px;
+  font-variant-numeric: tabular-nums;
+}
+.p-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #2A2A2E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.14);
+  transition: transform 0.12s ease;
+}
+.p-nav:active { transform: translateY(-50%) scale(0.9); }
+.p-prev { left: 6px; }
+.p-next { right: 6px; }
+
+.p-detail {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 2px 4px 0;
+}
+.p-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #232327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.p-chips {
+  margin-top: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.p-chips span {
+  background: #F4F5F7;
+  color: var(--text-2);
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.p-sub {
+  margin-top: 11px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #232327;
+}
+.p-size-table {
+  margin-top: 7px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+}
+.p-size-table p {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-3);
+  border-bottom: 1px dashed #F0F1F3;
+  padding-bottom: 4px;
+}
+.p-size-table b {
+  font-weight: 600;
+  font-size: 10.5px;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+}
+
+.p-match {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--match-bg);
+  border-radius: 9px;
+  padding: 8px 9px;
+  color: #6E7076;
+  cursor: default;
+}
+.pm-label {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.pm-label b {
+  color: var(--brand);
+  font-size: 13px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+.pm-bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #F6D7DC;
+  overflow: hidden;
+}
+.pm-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--brand);
+}
+.p-reason {
+  margin-top: 7px;
+  font-size: 10.5px;
+  line-height: 1.75;
+  color: #6E7076;
+}
+
+/* ---------- 推荐店铺 ---------- */
+.store-row {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+.store-card {
+  flex: 1;
+  min-width: 0;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  padding: 11px 8px 11px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  transition: transform 0.12s ease;
+}
+.store-card:active { transform: scale(0.97); }
+.store-ic { flex-shrink: 0; }
+.store-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.store-txt b {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #232327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.store-txt i {
+  font-style: normal;
+  font-size: 8.5px;
+  color: var(--text-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.store-arrow { color: #C4C6CC; flex-shrink: 0; }
+
+/* ---------- 输入栏（固定） ---------- */
+.ai2-dock {
+  position: fixed;
+  left: 50%;
+  bottom: calc(56px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  padding: 9px var(--page-pad) 8px;
+  background: linear-gradient(to top, #F5F6F8 78%, rgba(245, 246, 248, 0));
+  z-index: 150;
+}
+.ask2-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 44px;
+  padding: 0 14px;
+  background: #FFFFFF;
+  border: 1px solid #E9EBEF;
+  border-radius: 22px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.05);
+}
+.ask2-star { flex-shrink: 0; }
+.ask2-bar input {
+  font-size: 16px;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  color: var(--text-1);
+}
+.ask2-bar input::placeholder { color: #AEB0B7; }
+.ask2-bar input:focus { outline: none; }
+.ask2-mic {
+  flex-shrink: 0;
+  color: #55555A;
+  display: flex;
+  padding: 2px;
+}
+
+/* ---------- 底部留白 ---------- */
+.ai2-bottom-space {
+  height: calc(96px + env(safe-area-inset-bottom));
+}
+
+/* ---------- 加入衣柜按钮（轮播图正下方，与图片同宽） ---------- */
+.add-closet-btn {
+  margin-top: 7px;
+  width: 100%;
+  height: 33px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid #F3C9CF;
+  color: var(--brand);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: transform 0.12s ease, background 0.2s ease;
+}
+.add-closet-btn:active {
+  transform: scale(0.97);
+  background: #FFF5F6;
+}
+
+/* 翻页箭头以图片区域（扣除按钮高度）为居中基准 */
+.p-gallery .p-nav {
+  top: calc((100% - 40px) / 2);
+}

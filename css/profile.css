@@ -1,0 +1,399 @@
+/* ============================================================
+   个人中心 · 穿搭资产（依赖 style.css 公共 Token 与组件）
+   ============================================================ */
+
+/* ---------- 本页 Token ---------- */
+.pc-app {
+  --brand: #E8101B;
+  --gold: #D9A84E;
+  --pc-bg: #F5F6F8;
+  background: var(--pc-bg);
+}
+
+/* ---------- 头部 ---------- */
+.pc-header {
+  padding: 10px var(--page-pad) 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pc-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.pc-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 3px 10px rgba(40, 30, 45, 0.14);
+  flex-shrink: 0;
+  background: #EEE;
+}
+.pc-user-info { min-width: 0; }
+.pc-name-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.pc-name-row h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #232327;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 17px;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #3A332B, #17140F);
+  color: #EBCA8B;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.pc-bio {
+  margin-top: 5px;
+  font-size: 10.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-user-arrow {
+  color: #C4C6CC;
+  padding: 4px 2px;
+  flex-shrink: 0;
+}
+
+.pc-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.pc-tool {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2E2E32;
+  border-radius: 50%;
+  position: relative;
+}
+.pc-tool:active { background: #ECEDF0; }
+.pc-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+  border: 1.5px solid var(--pc-bg);
+}
+
+/* ---------- 主体 ---------- */
+.pc-main {
+  padding: 12px var(--page-pad) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- SVIP 横幅 ---------- */
+.pc-svip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 12px;
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 160% at 88% 0%, rgba(217, 168, 78, 0.28), transparent 55%),
+    linear-gradient(120deg, #2C2721 0%, #1B1814 60%, #241F19 100%);
+  box-shadow: 0 4px 14px rgba(28, 22, 16, 0.22);
+}
+.pc-crown { flex-shrink: 0; }
+.pc-svip-info { flex: 1; min-width: 0; }
+.pc-svip-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #F3D9A6;
+  letter-spacing: 0.3px;
+}
+.pc-svip-desc {
+  margin-top: 4px;
+  font-size: 9.5px;
+  color: rgba(243, 217, 166, 0.62);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-renew {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  height: 28px;
+  padding: 0 10px 0 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #F5DFB0, #D9A84E);
+  color: #4A3413;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform 0.12s ease;
+}
+.pc-renew:active { transform: scale(0.96); }
+
+/* ---------- 通用卡 ---------- */
+.pc-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.05);
+  padding: 13px 12px;
+}
+.pc-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.pc-head-ic {
+  width: 21px;
+  height: 21px;
+  border-radius: 7px;
+  background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pc-head h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #232327;
+  flex: 1;
+  min-width: 0;
+}
+.pc-more {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 10.5px;
+  color: var(--text-3);
+  flex-shrink: 0;
+  padding: 4px 0 4px 6px;
+}
+.pc-more:active { opacity: 0.7; }
+.pc-sub {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-3);
+  padding-left: 28px;
+}
+
+/* ---------- 资产统计 ---------- */
+.pc-stats {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.pc-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+.pc-stat + .pc-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  height: 76%;
+  width: 1px;
+  background: #F0F1F4;
+}
+.pc-stat b {
+  font-size: 21px;
+  font-weight: 700;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.pc-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.pc-stat-label svg { color: #8E9097; flex-shrink: 0; }
+
+/* ---------- 快捷入口 ---------- */
+.pc-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.pc-shortcut {
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(30, 35, 60, 0.05);
+  padding: 13px 9px;
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 9px;
+  position: relative;
+  transition: transform 0.12s ease;
+}
+.pc-shortcut:active { transform: scale(0.96); }
+.pc-shortcut > svg { color: #3A3A40; }
+.pc-shortcut .pc-sc-arrow {
+  position: absolute;
+  right: 7px;
+  top: 12px;
+  color: #C4C6CC;
+}
+.pc-sc-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #232327;
+  white-space: nowrap;
+}
+
+/* ---------- 资产管理 ---------- */
+.pc-manage {
+  background: linear-gradient(180deg, #FEF2F3 0%, #FFF8F8 100%);
+  box-shadow: 0 2px 10px rgba(232, 16, 27, 0.05);
+}
+.pc-manage-stats {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.pc-ms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+.pc-ms + .pc-ms::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14%;
+  height: 72%;
+  width: 1px;
+  background: rgba(232, 16, 27, 0.08);
+}
+.pc-ms-ic { color: #8E6F72; }
+.pc-ms b {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.pc-ms b.is-money { color: var(--brand); }
+.pc-ms-label { font-size: 9.5px; color: var(--text-3); }
+.pc-ms-up {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 9px;
+  color: #D93025;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 订单 ---------- */
+.pc-orders {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.pc-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  position: relative;
+  padding: 2px 0;
+}
+.pc-order + .pc-order::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: #F0F1F4;
+}
+.pc-order-ic {
+  position: relative;
+  color: #3A3A40;
+  display: flex;
+}
+.pc-order-badge {
+  position: absolute;
+  top: -5px;
+  right: -9px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--brand);
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.pc-order-label {
+  font-size: 10px;
+  color: var(--text-2);
+}
+
+/* ---------- 更多服务 ---------- */
+.pc-services {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.pc-service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  color: #3A3A40;
+  padding: 2px 0;
+  transition: transform 0.12s ease;
+}
+.pc-service:active { transform: scale(0.94); }
+.pc-service span {
+  font-size: 9.5px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+/* ---------- 底部留白 ---------- */
+.pc-bottom-space { height: 14px; }

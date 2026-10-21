@@ -1,0 +1,539 @@
+/* ============================================================
+   我的衣柜 · 穿搭图谱 / 胶囊衣柜 双视图
+   （依赖 style.css 公共 Token 与组件）
+   ============================================================ */
+
+/* ---------- 本页扩展 Token ---------- */
+.wd2-app {
+  --brand: #F40B29;          /* 本页主红 */
+  --wd-bg: #F4F5F8;          /* 页面底 */
+  --img-bg: #F6F6F4;         /* 商品图浅灰底 */
+  background: var(--wd-bg);
+}
+
+/* ---------- 页头 ---------- */
+.wd2-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px var(--page-pad) 0;
+}
+.wd2-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #232327;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.wd2-tabs {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  margin-left: 2px;
+}
+.wd2-tab {
+  position: relative;
+  font-size: 13px;
+  color: var(--text-2);
+  padding: 6px 0 7px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.wd2-tab.is-active {
+  color: var(--brand);
+  font-weight: 700;
+}
+.wd2-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--brand);
+}
+.wd2-history { flex-shrink: 0; color: #2E2E32; }
+
+/* ---------- 视图容器 ---------- */
+.wd2-main { padding: 10px var(--page-pad) 0; }
+.wd2-view { display: flex; flex-direction: column; }
+.wd2-view[hidden] { display: none; }
+.wd2-view.is-entering { animation: wd2In 0.28s ease; }
+@keyframes wd2In {
+  from { transform: translateY(6px); }
+  to   { transform: translateY(0); }
+}
+
+.panel {
+  margin-top: 12px;
+  padding: 14px 12px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
+}
+.wd2-sec-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #232327;
+}
+.wd2-sec-title::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+  flex-shrink: 0;
+}
+.wd2-sec-sub {
+  margin-top: 5px;
+  padding-left: 13px;
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+/* ---------- 统计条 ---------- */
+.wd2-stats {
+  display: flex;
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
+  padding: 12px 0;
+}
+.ws-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.ws-item + .ws-item { border-left: 1px solid #F0F1F4; }
+.ws-item span { font-size: 10px; color: var(--text-3); }
+.ws-item b {
+  font-size: 20px;
+  font-weight: 700;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 力导向图（公共样式见 force-graph.css，本页尺寸微调） ---------- */
+.wd2-app .fdi {
+  height: 330px;
+  margin-top: 8px;
+}
+.wd2-app .fdi-node {
+  width: 52px;
+  margin-left: -26px;
+}
+.wd2-app .fdi-avatar {
+  width: 48px;
+  height: 48px;
+}
+.wd2-app .fdi-center img {
+  width: 64px;
+  height: 64px;
+}
+.wd2-app .fdi-ripple {
+  width: 48px;
+  height: 48px;
+  margin: -24px;
+}
+
+/* ---------- 高频搭配 ---------- */
+.combo-row {
+  margin-top: 11px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.combo-card { transition: transform 0.12s ease; }
+.combo-card:active { transform: scale(0.96); }
+.combo-card img {
+  width: 100%;
+  aspect-ratio: 105 / 120;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--img-bg);
+}
+.combo-card p {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-1);
+  line-height: 1.35;
+}
+
+/* 主按钮 */
+.btn-primary {
+  margin-top: 13px;
+  width: 100%;
+  height: 42px;
+  border-radius: 21px;
+  background: var(--brand);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  box-shadow: 0 4px 12px rgba(244, 11, 41, 0.28);
+  transition: transform 0.12s ease, opacity 0.2s ease;
+}
+.btn-primary:active { transform: scale(0.98); opacity: 0.92; }
+.btn-ghost {
+  height: 42px;
+  border-radius: 21px;
+  background: #FFFFFF;
+  border: 1px solid #E4E6EA;
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+.btn-ghost:active { transform: scale(0.98); }
+
+/* ---------- 胶囊衣柜 ---------- */
+.capsule-stats {
+  margin-top: 12px;
+  display: flex;
+  padding: 2px 0;
+}
+.cs-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cs-item + .cs-item { border-left: 1px solid #F0F1F4; }
+.cs-item span { font-size: 10px; color: var(--text-3); }
+.cs-item b {
+  font-size: 21px;
+  font-weight: 700;
+  color: #232327;
+  font-variant-numeric: tabular-nums;
+}
+
+.season-row {
+  margin-top: 13px;
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.season-row::-webkit-scrollbar { display: none; }
+.season {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 17px;
+  border-radius: 15px;
+  background: #F4F5F7;
+  color: var(--text-2);
+  font-size: 12px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.12s ease;
+}
+.season:active { transform: scale(0.95); }
+.season.is-active {
+  background: var(--brand);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* 分类卡 */
+.cat-panel { padding-bottom: 13px; }
+.cat-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.cat-head .cat-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #232327;
+}
+.cat-head .cat-name::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+}
+.cat-count {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+.cat-arrow { margin-left: auto; color: #B9BBC2; }
+
+.item-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+.item-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.item-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.cap-item { transition: transform 0.12s ease; }
+.cap-item:active { transform: scale(0.96); }
+.cap-item img {
+  width: 100%;
+  aspect-ratio: 78 / 72;
+  object-fit: cover;
+  border-radius: 9px;
+  background: var(--img-bg);
+}
+.item-grid.cols-3 .cap-item img {
+  aspect-ratio: 117 / 72;
+}
+.cap-item p {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cat-empty {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-4);
+  text-align: center;
+  padding: 14px 0;
+}
+
+/* 底部双按钮 */
+.capsule-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 9px;
+}
+.capsule-actions .btn-primary {
+  margin-top: 0;
+  flex: 1.55;
+}
+.capsule-actions .btn-ghost { flex: 1; }
+
+/* ---------- 底部留白 ---------- */
+.wd2-bottom-space { height: 22px; }
+
+/* ============================================================
+   我的衣柜 · 仪表盘视图（DNA / 双卡 / 智能衣柜）
+   ============================================================ */
+.dash-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.link-more {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 11px;
+  color: var(--text-3);
+  padding: 4px 0 4px 8px;
+}
+
+.dna-sub {
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #232327;
+}
+.dna-color {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.color-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+  min-width: 0;
+}
+.color-legend li {
+  display: grid;
+  grid-template-columns: 20px 58px auto;
+  justify-items: start;
+  align-items: center;
+  font-size: 12px;
+  color: #3E3E42;
+}
+.color-legend i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 1px rgba(30, 30, 40, 0.08);
+}
+.color-legend b {
+  font-weight: 500;
+  color: #3E3E42;
+  font-variant-numeric: tabular-nums;
+}
+
+.donut {
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  background: conic-gradient(#2F3438 0 27.2%, #FFFFFF 27.2% 28.2%, #EEEEEE 28.2% 49%, #FFFFFF 49% 50%, #C2C5CB 50% 64%, #FFFFFF 64% 65%, #8FA6C0 65% 76%, #FFFFFF 76% 77%, #F0D8D8 77% 100%);
+}
+.donut::after {
+  content: '';
+  position: absolute;
+  inset: 21%;
+  border-radius: 50%;
+  background: var(--bg-card);
+}
+
+.style-cloud {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.style-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 15px;
+  background: #F5F6F8;
+  font-size: 12px;
+  color: #232327;
+}
+.style-chip b {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.twin-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.twin-card {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+}
+.twin-title { font-size: 13px; font-weight: 700; color: #232327; }
+.twin-num {
+  margin-top: 8px;
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.twin-sub { margin-top: 5px; font-size: 10px; color: var(--text-4); }
+.gap-body {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.gap-text { flex: 1; min-width: 0; }
+.gap-text p {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--brand);
+  white-space: nowrap;
+}
+.gap-text .gap-strong { font-weight: 600; }
+.gap-img {
+  width: 46px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--img-bg);
+}
+.twin-gap { cursor: pointer; }
+
+.closet-panel { padding-bottom: 14px; }
+.closet-tabs {
+  margin-top: 11px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.closet-tabs::-webkit-scrollbar { display: none; }
+.closet-tab {
+  flex-shrink: 0;
+  height: 29px;
+  padding: 0 15px;
+  border-radius: 15px;
+  background: #F5F6F8;
+  color: var(--text-1);
+  font-size: 12px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.12s ease;
+}
+.closet-tab:active { transform: scale(0.95); }
+.closet-tab.is-active {
+  background: var(--brand);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.closet-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 9px;
+}
+.closet-item { transition: transform 0.12s ease; }
+.closet-item:active { transform: scale(0.97); }
+.closet-item img {
+  width: 100%;
+  aspect-ratio: 209 / 125;
+  object-fit: cover;
+  border-radius: 9px;
+  background: var(--img-bg);
+}
+.closet-item .item-name {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #232327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.closet-item .item-tags {
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.closet-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-4);
+  padding: 26px 0;
+}

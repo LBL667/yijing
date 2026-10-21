@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F5F8">
+  <title>设置</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sheet.css">
+  <link rel="stylesheet" href="css/settings.css">
+</head>
+<body>
+  <div class="app st-app">
+
+    <!-- 页头 -->
+    <header class="st-header">
+      <button class="icon-btn st-back" id="btnBack" aria-label="返回">
+        <svg viewBox="0 0 24 24" width="22" height="22">
+          <path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>设置</h1>
+      <span class="st-header-space" aria-hidden="true"></span>
+    </header>
+
+    <main class="st-main">
+
+      <!-- 账号卡 -->
+      <section class="st-account">
+        <img class="st-avatar" id="stAvatar" src="" alt="头像">
+        <div class="st-account-info">
+          <p class="st-name" id="stName">小雁不吃薯</p>
+          <p class="st-meta" id="stMeta">Lv.3 · 大学生</p>
+        </div>
+      </section>
+
+      <!-- 账号与资料 -->
+      <section class="st-group">
+        <p class="st-group-title">账号与资料</p>
+        <button class="st-row" id="rowName">
+          <span>昵称</span>
+          <b id="rowNameVal">—</b>
+          <svg class="st-arrow" viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="st-row" id="rowBio">
+          <span>个性签名</span>
+          <b id="rowBioVal">—</b>
+          <svg class="st-arrow" viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="st-row" id="rowPhone">
+          <span>手机号</span>
+          <b id="rowPhoneVal">—</b>
+          <svg class="st-arrow" viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="st-row is-static">
+          <span>绑定微信</span>
+          <b id="rowWechat">—</b>
+        </div>
+      </section>
+
+      <!-- 通用 -->
+      <section class="st-group">
+        <p class="st-group-title">通用</p>
+        <button class="st-row" id="rowCache">
+          <span>清除缓存</span>
+          <b id="rowCacheVal">—</b>
+          <svg class="st-arrow" viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="st-row" id="rowAbout">
+          <span>关于我们</span>
+          <b>v1.0.0</b>
+          <svg class="st-arrow" viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </section>
+
+      <button class="st-logout" id="btnLogout">退出登录</button>
+      <p class="st-footer">型格智能 · 让穿搭变简单</p>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/api/client.js"></script>
+  <script src="js/ui-sheet.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

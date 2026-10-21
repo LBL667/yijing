@@ -1,0 +1,131 @@
+/* ============================================================
+   设置 · 页面样式（依赖 style.css 公共 Token 与组件）
+   ============================================================ */
+
+.st-app {
+  --brand: #E8101B;
+  --st-bg: #F4F5F8;
+  background: var(--st-bg);
+}
+
+/* ---------- 页头 ---------- */
+.st-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px var(--page-pad) 2px;
+}
+.st-header h1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #232327;
+}
+.st-back { color: #26262A; }
+.st-header-space { width: 34px; flex-shrink: 0; }
+
+/* ---------- 主体 ---------- */
+.st-main {
+  padding: 10px var(--page-pad) 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 账号卡 */
+.st-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
+  padding: 16px 14px;
+}
+.st-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #EEE;
+  flex-shrink: 0;
+}
+.st-account-info { min-width: 0; }
+.st-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #232327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.st-meta {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* 分组 */
+.st-group {
+  margin-top: 18px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
+  overflow: hidden;
+}
+.st-group-title {
+  padding: 14px 14px 4px;
+  font-size: 11px;
+  color: var(--text-4);
+  letter-spacing: 0.3px;
+}
+.st-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border-top: 1px solid #F4F5F7;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+.st-group-title + .st-row { border-top: 0; }
+.st-row:active { background: #FAFBFC; }
+.st-row.is-static:active { background: transparent; }
+.st-row > span {
+  font-size: 13px;
+  color: var(--text-1);
+  flex-shrink: 0;
+}
+.st-row > b {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-3);
+  max-width: 55%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.st-arrow { color: #C4C6CC; flex-shrink: 0; }
+
+/* 退出登录 */
+.st-logout {
+  margin-top: 20px;
+  height: 46px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
+  color: #D93025;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: transform 0.12s ease, opacity 0.2s ease;
+}
+.st-logout:active { transform: scale(0.98); opacity: 0.92; }
+
+.st-footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-4);
+  padding-bottom: 8px;
+}

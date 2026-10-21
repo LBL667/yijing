@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F5F8">
+  <title>穿搭资产</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/force-graph.css">
+  <link rel="stylesheet" href="css/sheet.css">
+  <link rel="stylesheet" href="css/wardrobe.css">
+</head>
+<body>
+  <div class="app wd2-app">
+
+    <!-- 页头：标题 + 三视图切换 -->
+    <header class="wd2-header">
+      <h1>穿搭资产</h1>
+      <nav class="wd2-tabs" id="wdTabs" role="tablist" aria-label="衣柜视图">
+        <button class="wd2-tab is-active" data-view="dash" role="tab" aria-selected="true">穿搭资产</button>
+        <button class="wd2-tab" data-view="graph" role="tab" aria-selected="false">穿搭图谱</button>
+        <button class="wd2-tab" data-view="capsule" role="tab" aria-selected="false">胶囊衣柜</button>
+      </nav>
+    </header>
+
+    <main class="wd2-main">
+
+      <!-- ===================== 视图一：我的衣柜（仪表盘） ===================== -->
+      <section class="wd2-view" id="viewDash">
+        <div class="wd2-stats" id="dashStats"></div>
+
+        <!-- 穿搭 DNA -->
+        <section class="panel">
+          <div class="dash-head">
+            <h2 class="wd2-sec-title">我的穿搭DNA</h2>
+            <button class="link-more" data-toast="穿搭报告详情为演示入口">查看详情
+              <svg viewBox="0 0 24 24" width="13" height="13"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <h3 class="dna-sub">色系分布</h3>
+          <div class="dna-color">
+            <ul class="color-legend" id="dnaLegend"></ul>
+            <div class="donut" id="dnaDonut" role="img" aria-label="色系分布环形图"></div>
+          </div>
+          <h3 class="dna-sub">风格分布</h3>
+          <div class="style-cloud" id="styleCloud"></div>
+        </section>
+
+        <!-- 重复率 + 缺口分析 -->
+        <div class="twin-row">
+          <div class="panel twin-card">
+            <h2 class="twin-title">搭配重复率</h2>
+            <p class="twin-num" id="repeatRate">32%</p>
+            <p class="twin-sub">（同单品多次搭配）</p>
+          </div>
+          <div class="panel twin-card twin-gap" id="gapCard" role="button" tabindex="0">
+            <h2 class="twin-title">缺口分析</h2>
+            <div class="gap-body">
+              <div class="gap-text">
+                <p>
+                  <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                    <path d="M12 3.6 21.4 20H2.6z" fill="#F40B29"/>
+                    <path d="M12 9.4v4.6" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/>
+                    <circle cx="12" cy="16.9" r="1.05" fill="#fff"/>
+                  </svg>
+                  你缺一件
+                </p>
+                <p class="gap-strong">正式场合的外套</p>
+              </div>
+              <img class="gap-img" id="gapImg" src="" alt="正式场合外套示意">
+            </div>
+          </div>
+        </div>
+
+        <!-- 智能衣柜 -->
+        <section class="panel closet-panel">
+          <h2 class="wd2-sec-title">智能衣柜</h2>
+          <div class="closet-tabs" id="closetTabs" aria-label="按分类筛选"></div>
+          <div class="closet-grid" id="closetGrid"></div>
+        </section>
+      </section>
+
+      <!-- ===================== 视图二：穿搭图谱 ===================== -->
+      <section class="wd2-view" id="viewGraph" hidden>
+        <div class="wd2-stats" id="graphStats"></div>
+
+        <section class="panel">
+          <h2 class="wd2-sec-title">我的穿搭图谱</h2>
+          <p class="wd2-sec-sub">探索单品与风格的搭配关系</p>
+          <div class="fdi" id="fdiGraph">
+            <svg class="fdi-links" id="fdiLinks"></svg>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="wd2-sec-title">高频搭配</h2>
+          <div class="combo-row" id="comboRow"></div>
+          <button class="btn-primary" id="btnAllCombos">
+            查看全部搭配
+            <svg viewBox="0 0 24 24" width="14" height="14"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </section>
+      </section>
+
+      <!-- ===================== 视图三：胶囊衣柜 ===================== -->
+      <section class="wd2-view" id="viewCapsule" hidden>
+        <section class="panel capsule-head">
+          <h2 class="wd2-sec-title">我的胶囊衣柜</h2>
+          <p class="wd2-sec-sub">精选少量单品，轻松组合一周穿搭</p>
+          <div class="capsule-stats">
+            <div class="cs-item"><span>核心单品</span><b id="statCore">12</b></div>
+            <div class="cs-item"><span>可搭配造型</span><b id="statLooks">24</b></div>
+            <div class="cs-item"><span>本周穿搭</span><b id="statWeek">7</b></div>
+          </div>
+          <div class="season-row" id="seasonRow" role="tablist" aria-label="季节筛选"></div>
+        </section>
+
+        <div id="capsuleCats"></div>
+
+        <div class="capsule-actions">
+          <button class="btn-primary" id="btnGenWeek">生成一周穿搭</button>
+          <button class="btn-ghost" id="btnEditCapsule">编辑胶囊</button>
+        </div>
+      </section>
+
+      <div class="wd2-bottom-space"></div>
+    </main>
+  </div>
+
+  <!-- 底部导航 -->
+  <nav class="tab-bar" id="tabBar" aria-label="底部导航">
+    <button class="tab" data-tab="社区">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      </svg>
+      <span>社区</span>
+    </button>
+    <button class="tab" data-tab="AI助手">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M12 4.4c-4.6 0-8 3-8 6.9 0 2.2 1.1 4.1 2.9 5.4l-.5 3.6 3.8-2c.6.1 1.2.2 1.8.2 4.6 0 8-3 8-6.9s-3.4-7.2-8-7.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <circle cx="8.6" cy="11.4" r="1" fill="currentColor"/>
+        <circle cx="12" cy="11.4" r="1" fill="currentColor"/>
+        <circle cx="15.4" cy="11.4" r="1" fill="currentColor"/>
+      </svg>
+      <span>AI助手</span>
+    </button>
+    <button class="tab is-active" data-tab="衣柜">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M14.5 7a2.5 2.5 0 1 0-5 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M12 7 3.9 12.8c-.9.7-.4 2.1.7 2.1h14.8c1.1 0 1.6-1.4.7-2.1z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/>
+      </svg>
+      <span>衣柜</span>
+    </button>
+    <button class="tab" data-tab="我的">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <circle cx="12" cy="8.2" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M5 20c0-3.8 3.1-6.3 7-6.3s7 2.5 7 6.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <span>我的</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/api/client.js"></script>
+  <script src="js/ui-sheet.js"></script>
+  <script src="js/force-graph.js"></script>
+  <script src="js/wardrobe.js"></script>
+</body>
+</html>

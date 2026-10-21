@@ -1,0 +1,311 @@
+/* ============================================================
+   公共组件样式 · 底部弹层 Sheet
+   ============================================================ */
+
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(20, 20, 28, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sheet-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet-panel {
+  width: 100%;
+  max-width: 480px;
+  max-height: 78dvh;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border-radius: 20px 20px 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  transform: translateY(24px);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.sheet-overlay.is-open .sheet-panel { transform: translateY(0); }
+
+.sheet-grab {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #E3E4E8;
+  margin: 8px auto 0;
+  flex-shrink: 0;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 8px;
+  flex-shrink: 0;
+}
+.sheet-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #232327;
+}
+.sheet-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #55555A;
+  background: #F4F5F7;
+}
+
+.sheet-body {
+  padding: 2px 16px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 弹层内通用元素 */
+.sheet-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.sheet-list-item img {
+  width: 100%;
+  aspect-ratio: 105 / 120;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #F6F6F4;
+}
+.sheet-list-item p {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: var(--text-1);
+  line-height: 1.35;
+}
+.sheet-list-item span {
+  display: block;
+  margin-top: 2px;
+  font-size: 9.5px;
+  color: var(--text-4);
+}
+
+.sheet-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sheet-field label {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+.sheet-field input {
+  font-size: 16px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #E9EBEF;
+  background: #F8F9FB;
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--text-1);
+  font-family: inherit;
+}
+.sheet-field input:focus {
+  outline: none;
+  border-color: var(--brand, #F40B29);
+  background: #FFFFFF;
+}
+.sheet-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 9px;
+}
+.sheet-btn {
+  flex: 1;
+  height: 42px;
+  border-radius: 21px;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sheet-btn.primary {
+  background: var(--brand, #F40B29);
+  color: #FFFFFF;
+}
+.sheet-btn.ghost {
+  background: #F4F5F7;
+  color: var(--text-2);
+}
+
+/* 编辑胶囊：单品行 */
+.cap-edit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+.cap-edit-item:last-child { border-bottom: 0; }
+.cap-edit-item img {
+  width: 46px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #F6F6F4;
+  flex-shrink: 0;
+}
+.cap-edit-item .ce-name {
+  flex: 1;
+  font-size: 12.5px;
+  color: var(--text-1);
+}
+.cap-edit-item .ce-cat {
+  font-size: 10px;
+  color: var(--text-4);
+  margin-left: 4px;
+}
+.cap-edit-remove {
+  font-size: 11px;
+  color: #D93025;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: #FDECEC;
+  flex-shrink: 0;
+}
+.cap-edit-empty {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-4);
+  padding: 24px 0;
+}
+
+/* ---------- 身材数据编辑 ---------- */
+.metric-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+.me-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.me-row label {
+  font-size: 11px;
+  color: var(--text-3);
+}
+.me-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #E9EBEF;
+  background: #F8F9FB;
+  padding: 0 12px;
+}
+.me-input input {
+  font-size: 16px;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  font-family: inherit;
+  outline: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.me-input input::-webkit-outer-spin-button,
+.me-input input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.me-input span {
+  font-size: 10px;
+  color: var(--text-4);
+  flex-shrink: 0;
+}
+
+/* ---------- 分类标签选择 ---------- */
+.cat-picker {
+  display: flex;
+  gap: 8px;
+}
+.cat-picker button {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 17px;
+  background: #F4F5F7;
+  color: var(--text-2);
+  font-size: 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.cat-picker button.is-active {
+  background: var(--brand, #F40B29);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* ---------- 加入衣柜（AI 页） ---------- */
+.add-closet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ac-preview {
+  width: 84px;
+  height: 88px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #F6F6F4;
+}
+.ac-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- 上传衣服（衣柜页） ---------- */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.upload-pick {
+  display: block;
+  cursor: pointer;
+}
+.upload-preview {
+  height: 132px;
+  border-radius: 12px;
+  border: 1.5px dashed #D8DBE2;
+  background: #FAFBFC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-4);
+  font-size: 12px;
+  overflow: hidden;
+}
+.upload-preview.has-img {
+  border-style: solid;
+  border-color: transparent;
+  background: #F6F6F4;
+}
+.upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.upload-preview svg { color: #B9BBC2; }

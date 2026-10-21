@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F5F6F8">
+  <title>AI 助手</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sheet.css">
+  <link rel="stylesheet" href="css/ai.css">
+</head>
+<body>
+  <div class="app ai2-app">
+
+    <!-- 页头 -->
+    <header class="ai2-header">
+      <div class="ai2-titles">
+        <h1>
+          <svg class="spark" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M12 2.6c.5 3.8 1.8 6.4 3.6 8-1.8 1.6-3.1 4.2-3.6 8-.5-3.8-1.8-6.4-3.6-8 1.8-1.6 3.1-4.2 3.6-8z" fill="#E05585"/>
+            <path d="M18.8 13.2c.3 1.9.9 3.2 1.8 4-1 .8-1.5 2.1-1.8 4-.3-1.9-.9-3.2-1.8-4 1-.8 1.5-2.1 1.8-4z" fill="#F2A3BC"/>
+          </svg>
+          AI 助手
+        </h1>
+        <p>你的专属穿搭合伙人</p>
+      </div>
+    </header>
+
+    <main class="ai2-main" id="ai2Main">
+
+      <!-- 我的身材数据 -->
+      <section class="body-card">
+        <div class="body-left">
+          <img class="body-img" src="images/body-silhouette.png" alt="身材剪影">
+        </div>
+        <div class="body-right">
+          <div class="body-head">
+            <h2>
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <circle cx="12" cy="7.6" r="3.4" fill="#E05585"/>
+                <path d="M5.4 20c0-3.6 3-6 6.6-6s6.6 2.4 6.6 6z" fill="#E05585"/>
+              </svg>
+              我的身材数据
+            </h2>
+            <button class="edit-btn" id="btnEditBody">
+              <svg viewBox="0 0 24 24" width="12" height="12"><path d="M4 20l.9-3.8L15.6 5.5a1.6 1.6 0 0 1 2.3 0l.6.6a1.6 1.6 0 0 1 0 2.3L7.8 19.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              编辑
+            </button>
+          </div>
+          <div class="body-metrics">
+            <div class="metric"><span class="m-label">身高</span><p><b>165</b><i>cm</i></p></div>
+            <div class="metric"><span class="m-label">体重</span><p><b>52</b><i>kg</i></p></div>
+            <div class="metric"><span class="m-label">肩宽</span><p><b>38</b><i>cm</i></p></div>
+            <div class="metric"><span class="m-label">胸围</span><p><b>86</b><i>cm</i></p></div>
+            <div class="metric"><span class="m-label">腰围</span><p><b>68</b><i>cm</i></p></div>
+            <div class="metric"><span class="m-label">袖长</span><p><b>56</b><i>cm</i></p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 对话与推荐结果（新消息插入此容器末尾） -->
+      <div id="ai2Msgs" class="ai2-msgs">
+
+        <div class="msg-row row-user">
+          <div class="bubble-user2">我想穿宽松一些的夹克</div>
+          <img class="msg-av" src="images/user-avatar.jpg" alt="用户头像">
+        </div>
+
+        <div class="msg-row row-ai">
+          <img class="msg-av" src="images/ai-avatar-2.jpg" alt="AI 头像">
+          <div class="ai-reply">
+            <p class="reply-text">根据你的身材数据，为你推荐以下宽松版型的夹克。</p>
+            <div class="size-strip">
+              <div class="ss-col">
+                <span class="ss-label">推荐尺码*</span>
+                <p class="ss-value"><b>M</b> 码</p>
+                <span class="ss-sub">（宽松版型）</span>
+              </div>
+              <div class="ss-col">
+                <span class="ss-label">预计合身度</span>
+                <p class="ss-value"><b>92%</b></p>
+                <span class="ss-badge">非常合适</span>
+              </div>
+              <div class="ss-col ss-col-reasons">
+                <span class="ss-label">*推荐理由</span>
+                <ul class="ss-reasons">
+                  <li>肩部线条流畅，不会紧绷</li>
+                  <li>下摆宽松修饰臂胯比例</li>
+                  <li>适合日常/通勤/出游等多种场景</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 推荐商品 -->
+        <section class="product-card">
+          <div class="p-gallery">
+            <span class="p-flag">
+              <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M12 2.6c.5 3.8 1.8 6.4 3.6 8-1.8 1.6-3.1 4.2-3.6 8-.5-3.8-1.8-6.4-3.6-8 1.8-1.6 3.1-4.2 3.6-8z" fill="#fff"/></svg>
+              AI 推荐
+            </span>
+            <span class="p-count" id="pCount">1/5</span>
+            <img id="pImage" src="images/jack-1.jpg" alt="宽松拼色翻领夹克">
+            <button class="p-nav p-prev" id="pPrev" aria-label="上一张">
+              <svg viewBox="0 0 24 24" width="13" height="13"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="p-nav p-next" id="pNext" aria-label="下一张">
+              <svg viewBox="0 0 24 24" width="13" height="13"><path d="m9 5.5 6.5 6.5L9 18.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <!-- 加入衣柜：位于轮播图正下方 -->
+            <button class="add-closet-btn" id="btnAddCloset">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d="M14.5 7a2.5 2.5 0 1 0-5 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M12 7 3.9 12.8c-.9.7-.4 2.1.7 2.1h14.8c1.1 0 1.6-1.4.7-2.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M19 13.5v4M17 15.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              加入衣柜
+            </button>
+          </div>
+          <div class="p-detail">
+            <h2 class="p-title" id="pTitle">宽松拼色翻领夹克</h2>
+            <div class="p-chips" id="pChips">
+              <span>休闲</span><span>春秋</span><span>宽松版型</span><span>百搭</span>
+            </div>
+            <h3 class="p-sub" id="pSizeTitle">尺码建议（M）</h3>
+            <div class="p-size-table" id="pSizeTable">
+              <p><span>衣长</span><b>66 cm</b></p>
+              <p><span>胸围</span><b>118 cm</b></p>
+              <p><span>肩宽</span><b>52 cm</b></p>
+              <p><span>袖长</span><b>55 cm</b></p>
+            </div>
+            <div class="p-match" id="pMatch">
+              <span class="pm-label">匹配度 <b id="pMatchNum">92%</b></span>
+              <span class="pm-bar"><i id="pMatchBar" style="width:92%"></i></span>
+            </div>
+            <h3 class="p-sub">推荐理由</h3>
+            <p class="p-reason" id="pReason">宽松落肩版型，能够很好地修饰肩部线条，同时对梨型身材友好，整体上身显瘦显气质，适合日常通勤和休闲场景。</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- 推荐店铺（随商品切换） -->
+      <section class="store-row" id="storeRow"></section>
+
+      <div class="ai2-bottom-space"></div>
+    </main>
+  </div>
+
+  <!-- 输入栏（固定） -->
+  <div class="ai2-dock">
+    <div class="ask2-bar">
+      <svg class="ask2-star" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+        <path d="M12 2.6c.5 3.8 1.8 6.4 3.6 8-1.8 1.6-3.1 4.2-3.6 8-.5-3.8-1.8-6.4-3.6-8 1.8-1.6 3.1-4.2 3.6-8z" fill="#E05585"/>
+      </svg>
+      <input id="ask2Input" type="text" placeholder='请输入你的问题，比如"帮我推荐一套约会穿搭"'
+             autocomplete="off" enterkeyhint="send" aria-label="向 AI 助手提问">
+      <button class="ask2-mic" id="ask2Mic" aria-label="语音输入">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <rect x="9.2" y="3.4" width="5.6" height="10.4" rx="2.8" fill="none" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M5.8 11.6a6.2 6.2 0 0 0 12.4 0M12 17.8v3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <nav class="tab-bar" id="tabBar" aria-label="底部导航">
+    <button class="tab" data-tab="社区">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      </svg>
+      <span>社区</span>
+    </button>
+    <button class="tab is-active" data-tab="AI助手">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M12 4.2c-4.7 0-8.2 3-8.2 7 0 2.3 1.2 4.3 3 5.6l-.5 3.7 3.9-2.1c.6.1 1.2.2 1.8.2 4.7 0 8.2-3.1 8.2-7.2s-3.5-7.2-8.2-7.2z" fill="currentColor"/>
+        <circle cx="9.4" cy="11" r="1.05" fill="#fff"/>
+        <circle cx="14.6" cy="11" r="1.05" fill="#fff"/>
+        <path d="M9.6 13.7c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span>AI助手</span>
+    </button>
+    <button class="tab" data-tab="衣柜">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M14.5 7a2.5 2.5 0 1 0-5 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M12 7 3.9 12.8c-.9.7-.4 2.1.7 2.1h14.8c1.1 0 1.6-1.4.7-2.1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      </svg>
+      <span>衣柜</span>
+    </button>
+    <button class="tab" data-tab="我的">
+      <svg class="tab-ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <circle cx="12" cy="8.2" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M5 20c0-3.8 3.1-6.3 7-6.3s7 2.5 7 6.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <span>我的</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/api/client.js"></script>
+  <script src="js/ui-sheet.js"></script>
+  <script src="js/ai.js"></script>
+</body>
+</html>
