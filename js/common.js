@@ -30,8 +30,12 @@ const tabBar = document.getElementById('tabBar');
 if (tabBar) {
   tabBar.addEventListener('click', (e) => {
     const btn = e.target.closest('.tab');
-    if (!btn || btn.classList.contains('is-active')) return;
+    if (!btn) return;
     const name = btn.dataset.tab;
+    /* 单页应用的导航项用 data-route，由 router 接管；
+       这里只处理独立页面里的 data-tab 导航 */
+    if (!name) return;
+    if (btn.classList.contains('is-active')) return;
     const route = TAB_ROUTES[name];
     if (route) {
       location.href = route;

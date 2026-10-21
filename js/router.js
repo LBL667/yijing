@@ -1,9 +1,10 @@
 /* ============================================================
    应用路由 · 单页切换
    ------------------------------------------------------------
-   各页面（community / assistant / wardrobe / profile / settings）
-   以片段形式按需注入，页面脚本首次进入时加载一次，之后常驻内存。
-   切换使用 View Transitions（支持时）或 CSS 淡入降级，做到无白屏。
+   · 各页面以片段形式按需注入，脚本首次进入时加载一次，之后常驻内存
+   · 页面唯一性：注入前清理同名残留 + inflight 加载锁，
+     避免重复注入导致页面脚本绑定到隐藏的那份 DOM（点击失效）
+   · 切换使用纯 CSS 过渡，不依赖 View Transitions（部分环境不回调）
    ============================================================ */
 'use strict';
 
@@ -17,20 +18,18 @@ const Router = (() => {
   };
   const DEFAULT = 'community';
 
-  const cache = new Map();       // name -> section 元素
+  const pageCache = new Map();   // name -> section（DOM + 脚本就绪）
+  const htmlCache = new Map();   // name -> 片段 HTML 文本
+  const inflight = new Map();    // name -> Promise<section>
   const scripts = new Set();     // 已加载的页面脚本
+
   let current = null;
-  let boot = null;               // 当前切换 promise，避免并发
+  let boot = null;
   let firstPaint = true;
 
   const host = () => document.getElementById('pageHost');
 
-  /* 首屏无独立骨架层，内容自身淡入 */
-  function dismissBoot() {}
-
-  /* ---------- 时间工具 ----------
-     等一帧：rAF 在无头浏览器 / 后台标签 / 省电模式下可能不触发，
-     必须带定时兜底，否则切换流程会永久挂起。 */
+  /* ---------- 等一帧（rAF 在后台/省电模式可能不触发，必须有定时兜底） ---------- */
   const nextFrame = () => new Promise((resolve) => {
     let done = false;
     const finish = () => {
@@ -42,16 +41,22 @@ const Router = (() => {
     setTimeout(finish, 60);
   });
 
-  /* ---------- 拉取页面片段 ---------- */
-  async function fetchPage(name) {
+  /* ---------- 片段获取（只缓存文本，不碰 DOM） ---------- */
+  async function fetchHtml(name) {
+    if (htmlCache.has(name)) return htmlCache.get(name);
     const cfg = ROUTES[name];
     const res = await fetch(cfg.file, { cache: 'force-cache' });
     if (!res.ok) throw new Error(`${cfg.file} ${res.status}`);
     const html = await res.text();
+    htmlCache.set(name, html);
+    return html;
+  }
+
+  /* ---------- 由片段构建页面节点 ---------- */
+  function buildPage(name, html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const app = doc.querySelector('.app');
-    if (!app) throw new Error(`${cfg.file} 缺少 .app 外壳`);
-
+    if (!app) throw new Error(`${ROUTES[name].file} 缺少 .app 外壳`);
     const page = document.createElement('section');
     page.className = 'page';
     page.dataset.page = name;
@@ -59,7 +64,7 @@ const Router = (() => {
     return page;
   }
 
-  /* ---------- 加载页面脚本（仅一次） ---------- */
+  /* ---------- 页面脚本（每个文件只执行一次） ---------- */
   function loadScript(src) {
     if (scripts.has(src)) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -72,17 +77,26 @@ const Router = (() => {
     });
   }
 
-  /* ---------- 准备页面（DOM + 脚本 + 首屏渲染） ---------- */
+  /* ---------- 准备页面：唯一性由「清理残留 + 加载锁」保证 ---------- */
   async function ensure(name) {
-    if (cache.has(name)) return cache.get(name);
+    if (pageCache.has(name)) return pageCache.get(name);
+    if (inflight.has(name)) return inflight.get(name);
 
-    const page = await fetchPage(name);
-    host().appendChild(page);          // 先入 DOM，脚本才能取到元素
-    await loadScript(ROUTES[name].js);
-    await nextFrame();                 // 等页面 boot 的首轮渲染落地
-    await nextFrame();
-    cache.set(name, page);
-    return page;
+    const task = (async () => {
+      const html = await fetchHtml(name);
+      /* 清理同名残留节点，确保脚本里的 #id 查询命中的是本份 DOM */
+      host().querySelectorAll(`.page[data-page="${name}"]`).forEach((el) => el.remove());
+      const page = buildPage(name, html);
+      host().appendChild(page);
+      await loadScript(ROUTES[name].js);
+      await nextFrame();
+      await nextFrame();
+      pageCache.set(name, page);
+      return page;
+    })().finally(() => inflight.delete(name));
+
+    inflight.set(name, task);
+    return task;
   }
 
   /* ---------- tab 高亮 ---------- */
@@ -93,13 +107,13 @@ const Router = (() => {
       btn.classList.toggle('is-active', active);
       btn.setAttribute('aria-selected', String(active));
     });
-    /* 设置等二级页隐藏底部导航，贴近原生二级页体感 */
+    /* 设置这类二级页隐藏底部导航，贴近原生二级页体感 */
     document.getElementById('tabBar').style.display = tabName ? '' : 'none';
   }
 
   /* ---------- 子视图（衣柜：dash / graph / capsule） ---------- */
   function applyQuery(name, query) {
-    if (name === 'wardrobe' && query.view && window.Pages?.wardrobe) {
+    if (name === 'wardrobe' && query.view && window.Pages && window.Pages.wardrobe) {
       window.Pages.wardrobe.open(query.view);
     }
   }
@@ -112,29 +126,27 @@ const Router = (() => {
       return;
     }
     if (boot) await boot.catch(() => {});
+
     boot = (async () => {
       const page = await ensure(name);
-      const prev = current ? cache.get(current) : null;
+      const prev = current ? pageCache.get(current) : null;
 
-      /* 纯 CSS 过渡：新页淡入 + 轻微上移，旧页立即卸载。
-         不依赖 View Transitions API（该 API 在无渲染帧的环境下不回调，
-         会导致切换卡死），任何浏览器行为一致。 */
       if (prev) prev.classList.remove('is-active', 'is-entering');
-      document.querySelectorAll('.page').forEach((p) => p.classList.remove('is-active'));
+      if (!silent) {
+        document.querySelectorAll('.page').forEach((p) => p.classList.remove('is-active'));
+      }
       page.classList.add('is-active');
-      if (!firstPaint) {
+      if (!firstPaint && !silent) {
         page.classList.remove('is-entering');
-        void page.offsetWidth;      // 强制回流，让动画可重播
+        void page.offsetWidth;          // 强制回流，让动画可重播
         page.classList.add('is-entering');
       }
+
       current = name;
       syncTab(name);
-
       applyQuery(name, query);
       updateHash(name, query, replace);
       firstPaint = false;
-      dismissBoot();
-      /* 页面回到顶部，符合 APP 切页习惯 */
       window.scrollTo(0, 0);
     })();
 
@@ -171,10 +183,9 @@ const Router = (() => {
     return { name: ROUTES[name] ? name : DEFAULT, query };
   }
 
-  /* ---------- 站内跳转入口（供其他页面调用） ---------- */
+  /* ---------- 站内跳转入口 ---------- */
   function navigate(route, opts = {}) {
     if (!route) return;
-    /* 兼容 "wardrobe.html?view=graph" 这类页面地址 */
     const m = /^([\w-]+)\.html(?:\?(.*))?$/.exec(route);
     if (m) {
       const query = {};
@@ -184,7 +195,7 @@ const Router = (() => {
           if (k) query[k] = decodeURIComponent(v || '');
         });
       }
-      const alias = { 'community': 'community', 'index': 'community', 'ai': 'assistant' };
+      const alias = { community: 'community', index: 'community', ai: 'assistant' };
       const name = ROUTES[m[1]] ? m[1] : (alias[m[1]] || DEFAULT);
       go(name, { query, ...opts });
       return;
@@ -204,29 +215,24 @@ const Router = (() => {
     location.href = route;
   }
 
-  /* ---------- 预热：空闲时预取其余页面 HTML ---------- */
+  /* ---------- 预热：只拉片段文本，不插入 DOM、不执行脚本 ---------- */
   function prefetch() {
-    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 900));
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 700));
     idle(() => {
-      Object.keys(ROUTES).forEach(async (name) => {
-        if (cache.has(name) || name === current) return;
-        if (document.querySelector(`.page[data-page="${name}"]`)) return;
-        try {
-          const page = await fetchPage(name);
-          host().appendChild(page);
-          cache.set(name, page);
-        } catch (_) { /* 预取失败静默忽略 */ }
+      Object.keys(ROUTES).forEach((name) => {
+        if (pageCache.has(name) || htmlCache.has(name)) return;
+        fetchHtml(name).catch(() => {});
       });
     });
   }
 
   /* ---------- 初始化 ---------- */
   function start() {
-    /* tab 点击 */
     document.getElementById('tabBar').addEventListener('click', (e) => {
       const btn = e.target.closest('.tab');
       if (!btn) return;
       const route = btn.dataset.route;
+      if (!route) return;
       if (route === current) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
@@ -234,13 +240,11 @@ const Router = (() => {
       go(route);
     });
 
-    /* 浏览器前进/后退 */
     window.addEventListener('popstate', () => {
       const { name, query } = parseHash();
-      go(name, { query, silent: false });
+      go(name, { query });
     });
 
-    /* 暴露给页面脚本使用 */
     window.Navigate = navigate;
     window.AppRouter = { go, navigate };
 
@@ -248,8 +252,7 @@ const Router = (() => {
     go(name, { query, replace: true })
       .catch((err) => {
         console.error('[router] 首屏加载失败', err);
-        dismissBoot();
-        if (window.showToast) showToast('页面加载失败，请刷新重试');
+        if (window.showToast) window.showToast('页面加载失败，请刷新重试');
       })
       .finally(() => prefetch());
   }
