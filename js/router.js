@@ -29,6 +29,17 @@ const Router = (() => {
 
   const host = () => document.getElementById('pageHost');
 
+  /* 资源版本号：与 HTML 的 asset-version 保持一致，避免加载到缓存旧文件 */
+  const assetVer = () => {
+    const m = document.querySelector('meta[name="asset-version"]');
+    return m ? m.content : '';
+  };
+  const withVer = (url) => {
+    const v = assetVer();
+    if (!v) return url;
+    return url + (url.includes('?') ? '&' : '?') + 'v=' + v;
+  };
+
   /* ---------- 等一帧（rAF 在后台/省电模式可能不触发，必须有定时兜底） ---------- */
   const nextFrame = () => new Promise((resolve) => {
     let done = false;
@@ -45,7 +56,7 @@ const Router = (() => {
   async function fetchHtml(name) {
     if (htmlCache.has(name)) return htmlCache.get(name);
     const cfg = ROUTES[name];
-    const res = await fetch(cfg.file, { cache: 'force-cache' });
+    const res = await fetch(withVer(cfg.file), { cache: 'no-cache' });
     if (!res.ok) throw new Error(`${cfg.file} ${res.status}`);
     const html = await res.text();
     htmlCache.set(name, html);
@@ -69,7 +80,7 @@ const Router = (() => {
     if (scripts.has(src)) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = src;
+      s.src = withVer(src);
       s.async = false;
       s.onload = () => { scripts.add(src); resolve(); };
       s.onerror = () => reject(new Error(`脚本加载失败 ${src}`));
